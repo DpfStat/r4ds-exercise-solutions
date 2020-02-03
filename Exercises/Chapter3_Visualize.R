@@ -69,3 +69,49 @@ ggplot(data = diamonds) +
 #position= 'dodge' not stack in one bar
 ggplot(data = diamonds) +
   geom_bar(mapping = aes(x = cut, fill = clarity), position = "dodge")
+# position = 'jitter' add some small random noise
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy), position = "jitter")
+
+# Coordinate systems ------------------------------------------------------
+
+#coord_flip()
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) +
+  geom_boxplot()
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) +
+  geom_boxplot() +
+  coord_flip()
+
+#coord_quickmap() sets the aspect ratio correctly for maps
+nz <- map_data("nz")
+
+ggplot(nz, aes(long, lat, group = group)) +
+  geom_polygon(fill = "white", colour = "black")
+
+ggplot(nz, aes(long, lat,  group = group)) +
+  geom_polygon(fill = "white", colour = "black") +
+  coord_quickmap()
+
+#coord_olar() uses a polar system
+bar <- ggplot(data = diamonds) +
+  geom_bar(
+    mapping = aes(x = cut, fill = cut),
+    show.legend = FALSE,
+    width = 1
+  ) +
+  theme(aspect.ratio = 1) +
+  labs(x = NULL, y = NULL)
+
+bar + coord_flip()
+bar + coord_polar()
+#3.9.1
+ggplot(mpg, aes(x = factor(1), fill = drv)) +
+  geom_bar()
+#The argument `theta = "y"` maps `y` to the angle of each section.
+ggplot(mpg, aes(x = factor(1), fill = drv)) +
+  geom_bar(width = 1) +
+  coord_polar(theta = "y")
+#If `coord_polar()` is specified without `theta = "y"`, then the resulting plot is called a bulls-eye chart.
+ggplot(mpg, aes(x = factor(1), fill = drv)) +
+  geom_bar(width = 1) +
+  coord_polar()
